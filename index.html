@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Detectives del Diario: el misterio de los planos perdidos</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2E2018">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Detectives">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Caveat:wght@600;700&family=Andika:wght@400;700&display=swap" rel="stylesheet">
@@ -338,7 +345,23 @@ function tone(kind){if(muted)return;try{actx=actx||new(window.AudioContext||wind
  N.forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.type=kind==="stamp"?"square":kind==="bad"?"sine":"triangle";o.frequency.value=f;const t=actx.currentTime+i*(kind==="win"?.13:.1);
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(kind==="stamp"?.08:.16,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+.32);});}catch(e){}}
 $$(".sndBtn").forEach(b=>b.addEventListener("click",()=>{muted=!muted;$$(".sndBtn").forEach(x=>{x.style.opacity=muted?.45:1;x.setAttribute("aria-pressed",muted);});}));
-$$(".fsBtn").forEach(b=>b.addEventListener("click",()=>{try{const d=document;if(d.fullscreenElement||d.webkitFullscreenElement){(d.exitFullscreen||d.webkitExitFullscreen).call(d);}else{const e=d.documentElement;const r=(e.requestFullscreen||e.webkitRequestFullscreen);if(r){const p=r.call(e);if(p&&p.catch)p.catch(()=>{});}try{screen.orientation.lock("landscape").catch(()=>{});}catch(_){}}}catch(e){}}));
+const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const standalone=()=>matchMedia("(display-mode: fullscreen)").matches||matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+function showInstall(){overlay(`<div class="ovcard" style="max-width:980px;text-align:left;align-items:stretch">
+ <h2 style="font-size:40px;text-align:center">Pantalla completa</h2>
+ <div style="font-size:26px;line-height:1.35">${isIOS?
+  `Este navegador no deja ocultar sus barras. Instálalo como app:<br><b>1.</b> Ábrelo en <b>Safari</b>.<br><b>2.</b> Toca <b>Compartir</b> (cuadrado con flecha) → <b>Añadir a pantalla de inicio</b>.<br><b>3.</b> Abre el icono <b>Detectives</b>: se verá sin barras.`:
+  `Instálalo como app y se abrirá a pantalla completa:<br><b>1.</b> En Chrome, toca el menú <b>⋮</b> (arriba a la derecha).<br><b>2.</b> Elige <b>Instalar aplicación</b> o <b>Añadir a pantalla de inicio</b>.<br><b>3.</b> Abre el icono <b>Detectives</b>.`}</div>
+ <div style="text-align:center"><button class="btn main" id="ovOk">¡Entendido!</button></div></div>`);$("#ovOk").onclick=closeOv;}
+function goFS(){const d=document,e=d.documentElement;
+ if(d.fullscreenElement||d.webkitFullscreenElement){try{(d.exitFullscreen||d.webkitExitFullscreen).call(d);}catch(_){}return;}
+ const r=e.requestFullscreen||e.webkitRequestFullscreen;if(!r){showInstall();return;}
+ const lock=()=>{try{const p=screen.orientation&&screen.orientation.lock&&screen.orientation.lock("landscape");if(p&&p.catch)p.catch(()=>{});}catch(_){}};
+ try{const p=r.call(e,{navigationUI:"hide"});if(p&&p.then)p.then(lock).catch(showInstall);else setTimeout(()=>{if(!d.fullscreenElement&&!d.webkitFullscreenElement)showInstall();else lock();},600);}catch(_){showInstall();}}
+$$(".fsBtn").forEach(b=>b.addEventListener("click",goFS));
+if(standalone())$$(".fsBtn").forEach(b=>b.style.display="none");
+document.addEventListener("fullscreenchange",()=>setTimeout(fit,100));
+if("serviceWorker" in navigator&&location.protocol==="https:"&&location.hostname.endsWith("github.io")){navigator.serviceWorker.register("sw.js").catch(()=>{});}
 
 /* ---------- screens / overlay ---------- */
 function show(id,hud){const t=document.getElementById("toast");if(t)t.style.display="none";$$(".screen").forEach(s=>s.classList.toggle("on",s.id===id));$("#hud").style.display=hud?"flex":"none";resetTimers();}
