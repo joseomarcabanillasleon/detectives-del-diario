@@ -253,7 +253,7 @@ function hud(pop){
 }
 function renderInicio(){
  const s=$("#s-inicio");s.innerHTML=GAME.cover();
- s.insertAdjacentHTML("beforeend",`<div style="position:absolute;right:0;top:0;display:flex;gap:8px;z-index:3"><button class="ib fsBtn" aria-label="Pantalla completa">${UI.fs}</button><button class="ib sndBtn" aria-label="Sonido">${UI.snd}</button></div>`);
+ s.insertAdjacentHTML("beforeend",`<div style="position:absolute;right:0;top:0;display:flex;gap:8px;z-index:3"><a class="ib" href="../" aria-label="Todos los juegos" style="text-decoration:none"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A2E26" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></a><button class="ib fsBtn" aria-label="Pantalla completa">${UI.fs}</button><button class="ib sndBtn" aria-label="Sonido">${UI.snd}</button></div>`);
  bindTools(s);
  $$("#teamPick .tm").forEach(b=>b.onclick=()=>{$$("#teamPick .tm").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");nTeams=+b.dataset.n;tone("tick");});
  $("#play").onclick=()=>{TEAMS=TEAMS_ALL.slice(0,nTeams);turnI=-1;G={i:0,r:0,got:0,stamps:[]};$("#turn").classList.remove("on");intro();};
@@ -418,7 +418,7 @@ const RET={
 
 /* ---------- final ---------- */
 function finale(){show("s-final",false);const f=$("#s-final");f.innerHTML=GAME.final();
- f.insertAdjacentHTML("beforeend",`<div style="position:absolute;right:0;top:0;display:flex;gap:8px;z-index:3"><button class="ib fsBtn" aria-label="Pantalla completa">${UI.fs}</button><button class="ib sndBtn" aria-label="Sonido">${UI.snd}</button></div>`);
+ f.insertAdjacentHTML("beforeend",`<div style="position:absolute;right:0;top:0;display:flex;gap:8px;z-index:3"><a class="ib" href="../" aria-label="Todos los juegos" style="text-decoration:none"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A2E26" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></a><button class="ib fsBtn" aria-label="Pantalla completa">${UI.fs}</button><button class="ib sndBtn" aria-label="Sonido">${UI.snd}</button></div>`);
  bindTools(f);confetti();tone("win");if(GAME.afterFinal)GAME.afterFinal();
  const a=$("#again");if(a)a.onclick=()=>{show("s-inicio",false);};}
 
@@ -459,7 +459,7 @@ const GAME={
     ${classroom(3,488)}
     <div class="hand" style="font-size:32px;text-align:center">¡Ayuda a ampliar la escuela!</div>
    </div>
-   <div style="position:absolute;left:-40px;top:380px;width:190px;height:190px;border-radius:50%;background:#FDFBF5;border:4px solid #3A2E26;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg);box-shadow:0 8px 18px rgba(0,0,0,.3)">${icon("pray",150)}</div>
+   <div style="position:absolute;left:-50px;top:450px;width:150px;height:150px;border-radius:50%;background:#FDFBF5;border:4px solid #3A2E26;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg);box-shadow:0 8px 18px rgba(0,0,0,.3)">${icon("pray",115)}</div>
   </div>`,
  intro:[
   {art:icon("family",220),cap:"Filip estaba triste: sus padres ya no vivían juntos."},
